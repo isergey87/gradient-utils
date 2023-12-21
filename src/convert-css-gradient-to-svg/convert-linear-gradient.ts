@@ -4,8 +4,9 @@ import {
   LinearGradient
 } from "../gradient-parser";
 import {SVGLinearGradient} from "./types";
+import {svgAngle, svgColorStops} from "./unitls";
 
-const radToDeg = (rad: number) => rad * (180/Math.PI)
+const radToDeg = (rad: number) => rad * (180 / Math.PI)
 
 export const convertLinearGradient = (cssGradient: LinearGradient, aspectRatio: number): SVGLinearGradient | null => {
   if (cssGradient.repeatable) {
@@ -52,6 +53,16 @@ export const convertLinearGradient = (cssGradient: LinearGradient, aspectRatio: 
     }
   }
 
+  const result: SVGLinearGradient = {
+    ...svgAngle(degAngle, aspectRatio),
+    colorStops: []
+  }
 
-  return null
+  const colorStops = svgColorStops(cssGradient.colorStops)
+  if (colorStops === null) {
+    console.warn('Can\'t get color stops')
+    return null
+  }
+  result.colorStops = colorStops
+  return result
 }

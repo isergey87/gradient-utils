@@ -1,7 +1,10 @@
+import {ColorStop, LinearColorHint} from '../gradient-parser'
+import {SVGColorStop} from './types'
+
 const R = 360
 export const svgAngle = (
   angle: number,
-  aspectRatio: number
+  aspectRatio: number,
 ): {
   x1: string
   y1: string
@@ -70,4 +73,38 @@ export const svgAngle = (
     x2: (tx1 * 100) / width + '%',
     y2: (ty1 * 100) / height + '%',
   }
+}
+
+export const svgColorStops = (
+  colorStops: (ColorStop | LinearColorHint)[],
+): SVGColorStop[] | null => {
+  const result: SVGColorStop[] = []
+  let prevOffset = 0
+  for (let i = 0; i < colorStops.length; i++) {
+    const colorStop = colorStops[i]
+    if ('color' in colorStop) {
+      let color = ''
+      let alpha: number | undefined
+      let offset: number
+      if (colorStop.start) {
+        if (colorStop.start.unit !== '%' && colorStop.start.unit !== '') {
+          console.warn(
+            `don't support offset unit ${colorStop.start.unit} (${colorStop.start.sourceValue})`,
+          )
+          return null
+        } else {
+          offset = colorStop.start.value
+        }
+      } else {
+        const leftSpace = 100 - prevOffset
+        const length = leftSpace / colorStops.length - i
+        offset = length + prevOffset
+      }
+      prevOffset = offset
+    } else {
+      console.log("don't support ColorHint")
+      return null
+    }
+  }
+  return result
 }
