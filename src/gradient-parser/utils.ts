@@ -166,9 +166,9 @@ export const extractStartWithHex = (source: string): HEX | null => {
 
     return {
       type: 'HEX',
-      r: red,
-      g: green,
-      b: blue,
+      R: red,
+      G: green,
+      B: blue,
       alpha,
       source: match.groups.color,
     }

@@ -1,4 +1,3 @@
-
 export interface SVGColorStop {
   /** number in percent (0;100) */
   offset?: number
@@ -10,5 +9,5 @@ export interface SVGLinearGradient {
   y1: string
   x2: string
   y2: string
-  colorStops:SVGColorStop[]
+  colorStops: SVGColorStop[]
 }

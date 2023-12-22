@@ -1,5 +1,3 @@
-import {LinearGradient} from "../gradient-parser";
+import {LinearGradient} from '../gradient-parser'
 
-export const generateLinearGradient = (cssGradient: LinearGradient)=> {
-
-}
+export const generateLinearGradient = (cssGradient: LinearGradient) => {}

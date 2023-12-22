@@ -86,10 +86,35 @@ export const svgColorStops = (
       let color = ''
       let alpha: number | undefined
       let offset: number
+
+      if (typeof colorStop.color === 'string') {
+        color = colorStop.color
+      } else {
+        switch (colorStop.color.type) {
+          case 'HEX':
+          case 'RGB': {
+            color = `rgb(${colorStop.color.R},${colorStop.color.G},${colorStop.color.B})`
+            break
+          }
+          case 'HSL': {
+            color = `hsl(${colorStop.color.H},${colorStop.color.S}%,${colorStop.color.L}%)`
+            break
+          }
+
+          default: {
+            console.warn(`unsupported color ${JSON.stringify(colorStop.color)}`)
+            return null
+          }
+        }
+        if (colorStop.color.alpha != null && typeof colorStop.color.alpha === 'number') {
+          alpha = colorStop.color.alpha
+        }
+      }
+
       if (colorStop.start) {
         if (colorStop.start.unit !== '%' && colorStop.start.unit !== '') {
           console.warn(
-            `don't support offset unit ${colorStop.start.unit} (${colorStop.start.sourceValue})`,
+            `unsupported offset unit ${colorStop.start.unit} (${colorStop.start.sourceValue})`,
           )
           return null
         } else {

@@ -56,9 +56,12 @@ export interface LengthPercentage {
 
 export interface HEX {
   type: 'HEX'
-  r: number
-  g: number
-  b: number
+  /** number value (0;255) */
+  R: number
+  /** number value (0;255) */
+  G: number
+  /** number value (0;255) */
+  B: number
   /** number value (0;1) */
   alpha?: number
   source: string

@@ -31,7 +31,7 @@ export const parseRepeatingLinearGradient = (gradient: string | null | undefined
 const linearGradientParser = (
   gradient: string | null | undefined,
   prefix: string,
-  repeatable = false
+  repeatable = false,
 ): LinearGradient | null => {
   if (!gradient) {
     return null
@@ -72,7 +72,9 @@ const linearGradientParser = (
     return null
   }
   linearGradient.colorStops = colorStops
-  linearGradient.repeatable = repeatable
+  if (repeatable) {
+    linearGradient.repeatable = true
+  }
   return linearGradient
 }
 

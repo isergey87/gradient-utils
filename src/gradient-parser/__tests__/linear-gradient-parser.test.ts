@@ -25,9 +25,9 @@ describe('linear gradient incorrect input', () => {
         {
           color: {
             type: 'HEX',
-            r: 230,
-            g: 100,
-            b: 101,
+            R: 230,
+            G: 100,
+            B: 101,
             alpha: undefined,
             source: '#e66465',
           },
@@ -35,9 +35,9 @@ describe('linear gradient incorrect input', () => {
         {
           color: {
             type: 'HEX',
-            r: 145,
-            g: 152,
-            b: 229,
+            R: 145,
+            G: 152,
+            B: 229,
             alpha: undefined,
             source: '#9198e5',
           },
@@ -99,9 +99,9 @@ describe('linear gradient incorrect input', () => {
         {
           color: {
             type: 'HEX',
-            r: 230,
-            g: 100,
-            b: 101,
+            R: 230,
+            G: 100,
+            B: 101,
             alpha: undefined,
             source: '#e66465',
           },
@@ -109,9 +109,9 @@ describe('linear gradient incorrect input', () => {
         {
           color: {
             type: 'HEX',
-            r: 145,
-            g: 152,
-            b: 229,
+            R: 145,
+            G: 152,
+            B: 229,
             alpha: undefined,
             source: '#9198e5',
           },
@@ -174,9 +174,9 @@ describe('linear gradient incorrect input', () => {
         {
           color: {
             type: 'HEX',
-            r: 63,
-            g: 135,
-            b: 166,
+            R: 63,
+            G: 135,
+            B: 166,
             alpha: undefined,
             source: '#3f87a6',
           },
@@ -184,9 +184,9 @@ describe('linear gradient incorrect input', () => {
         {
           color: {
             type: 'HEX',
-            r: 235,
-            g: 248,
-            b: 225,
+            R: 235,
+            G: 248,
+            B: 225,
             alpha: undefined,
             source: '#ebf8e1',
           },
@@ -194,9 +194,9 @@ describe('linear gradient incorrect input', () => {
         {
           color: {
             type: 'HEX',
-            r: 246,
-            g: 157,
-            b: 60,
+            R: 246,
+            G: 157,
+            B: 60,
             alpha: undefined,
             source: '#f69d3c',
           },
@@ -217,9 +217,9 @@ describe('linear gradient incorrect input', () => {
         {
           color: {
             type: 'HEX',
-            r: 51,
-            g: 51,
-            b: 51,
+            R: 51,
+            G: 51,
+            B: 51,
             alpha: undefined,
             source: '#333',
           },
@@ -227,9 +227,9 @@ describe('linear gradient incorrect input', () => {
         {
           color: {
             type: 'HEX',
-            r: 51,
-            g: 51,
-            b: 51,
+            R: 51,
+            G: 51,
+            B: 51,
             alpha: undefined,
             source: '#333',
           },
@@ -242,9 +242,9 @@ describe('linear gradient incorrect input', () => {
         {
           color: {
             type: 'HEX',
-            r: 238,
-            g: 238,
-            b: 238,
+            R: 238,
+            G: 238,
+            B: 238,
             alpha: undefined,
             source: '#eee',
           },
@@ -257,9 +257,9 @@ describe('linear gradient incorrect input', () => {
         {
           color: {
             type: 'HEX',
-            r: 51,
-            g: 51,
-            b: 51,
+            R: 51,
+            G: 51,
+            B: 51,
             alpha: undefined,
             source: '#333',
           },
