@@ -1,5 +1,4 @@
 import {
-  ColorStop,
   isLinearGradientWithAngle,
   isLinearGradientWithInterpolation,
   LinearGradient,
@@ -61,21 +60,31 @@ export const convertLinearGradient = (
   if (!start) {
     return null
   }
+  if (!start.start) {
+    start.start = {
+      value: 0,
+      unit: '%',
+      sourceValue: '0%',
+    }
+  }
   const end = checkSupportColorStop(cssGradient.colorStops[cssGradient.colorStops.length - 1])
   if (!end) {
     return null
   }
+  if (!end.start) {
+    end.start = {
+      value: 100,
+      unit: '%',
+      sourceValue: '100%',
+    }
+  }
+  end.start.value = Math.max(start.start.value, end.start.value)
   const result: SVGLinearGradient = {
-    ...svgAngle(
-      degAngle,
-      aspectRatio,
-      start.start?.value ?? 0,
-      end.end?.value ?? end.start?.value ?? 100,
-    ),
+    ...svgAngle(degAngle, aspectRatio, start.start.value, end.start.value),
     colorStops: [],
   }
 
-  const colorStops = svgColorStops(cssGradient.colorStops)
+  const colorStops = svgColorStops(cssGradient.colorStops, start.start.value, end.start.value)
   if (colorStops === null) {
     console.warn("Can't get color stops")
     return null

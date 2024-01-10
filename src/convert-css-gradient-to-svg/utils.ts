@@ -1,6 +1,5 @@
 import {ColorStop, LinearColorHint} from '../gradient-parser'
 import {SVGColorStop} from './types'
-import {ColorStops} from '../../dist/gradient-parser'
 
 const R = 360
 
@@ -13,8 +12,8 @@ const R = 360
 export const svgAngle = (
   angle: number,
   aspectRatio: number,
-  start: number,
-  end: number,
+  start: number = 0,
+  end: number = 100,
 ): {
   x1: string
   y1: string
@@ -33,6 +32,10 @@ export const svgAngle = (
   start = start / 100
   end = end / 100
 
+  if (end === start) {
+    end = start + 0.000001
+  }
+
   angle = ((angle % R) + R) % R
   const width = 300
   const height = width / aspectRatio
@@ -42,11 +45,11 @@ export const svgAngle = (
   const DF = DE * Math.sin(radAngle)
   const DG = DE * Math.cos(radAngle)
 
-  let x1 = DG
-  let y1 = height + DF
+  const x1 = DG
+  const y1 = height + DF
 
-  let x2 = width - DG
-  let y2 = -DF
+  const x2 = width - DG
+  const y2 = -DF
 
   let xs
   let ys
@@ -91,9 +94,56 @@ export const svgAngle = (
   }
 }
 
-export const svgColorStops = (
+export const prepareColorStops = (
   colorStops: (ColorStop | LinearColorHint)[],
 ): SVGColorStop[] | null => {
+ const result: SVGColorStop[] = []
+  let min = 0
+  for (let i = 0; i < colorStops.length; i++) {
+    const colorStop = checkSupportColorStop(colorStops[i])
+    if (!colorStop) {
+      return null
+    }
+    if (i === 0) {
+      if (!colorStop.start) {
+        colorStop.start = {
+          value: 0,
+          unit: '%',
+          sourceValue: '',
+        }
+      }
+      min = colorStop.start.value
+    } else if (colorStop.start) {
+      if (colorStop.start.value < min) {
+        colorStop.start.value = min
+      } else {
+        min = colorStop.start.value
+      }
+      if (colorStop.end && (colorStop.end.value < colorStop.start.value || i === colorStops.length - 1)) {
+        colorStop.end = undefined
+      }
+    }
+
+    if (i === colorStops.length - 1 && !colorStop.start) {
+      colorStop.start = {
+        value: Math.max(min, 100),
+        unit: '%',
+        sourceValue: '',
+      }
+    }
+  }
+ return result
+}
+
+export const svgColorStops = (
+  colorStops: (ColorStop | LinearColorHint)[],
+  start: number = 0,
+  end: number = 100,
+): SVGColorStop[] | null => {
+  const offset = -start
+  const multiplier = start === end ? 1 : 100 / Math.abs(end - start)
+
+
   let result: SVGColorStop[] = []
   let undefinedIndex = -1
   let definedOffset: undefined | number
@@ -159,9 +209,11 @@ const fillEqualOffset = (colorStops: SVGColorStop[], from: number, toOffset: num
   }
 }
 
-export const checkSupportColorStop = (colorStop: ColorStop | LinearColorHint | undefined): ColorStop | null => {
+export const checkSupportColorStop = (
+  colorStop: ColorStop | LinearColorHint | undefined,
+): ColorStop | null => {
   if (!colorStop) {
-    console.warn("should be at least two color stops")
+    console.warn('should be at least two color stops')
     return null
   }
   if (!isColorStop(colorStop)) {

@@ -1,13 +1,6 @@
-import {svgAngle, svgAngle1, svgAngle2, svgColorStops} from '../utils'
-import {parseLinearGradient} from '../../gradient-parser'
-import {convertLinearGradient} from '../convert-linear-gradient'
+import {svgColorStops} from '../utils'
 
 describe('svgColorStops - check stops offset', () => {
-  const g = parseLinearGradient('linear-gradient(90deg, red, blue 150%)')
-  console.log(g && convertLinearGradient(g, 3))
-
-  console.log(svgAngle2(5, 2, 0, 100))
-
   test('linear-gradient(red, blue)', () => {
     expect(
       svgColorStops([
