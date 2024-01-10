@@ -63,10 +63,7 @@ module.exports = {
       'error',
       {skipStrings: true, skipComments: true, skipTemplates: true},
     ],
-    '@typescript-eslint/no-magic-numbers': [
-      'warn',
-      {ignore: ['1n', 1, 0, -1, 10], ignoreArrayIndexes: true},
-    ],
+    '@typescript-eslint/no-magic-numbers': 'off',
     '@typescript-eslint/no-unused-vars': ['error', {args: 'all', argsIgnorePattern: '^_'}],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
