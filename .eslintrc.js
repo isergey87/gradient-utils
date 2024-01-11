@@ -27,7 +27,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'prettier', 'simple-import-sort'],
   rules: {
     'prettier/prettier': 'warn',
-    'no-console': 'warn',
+    'no-console': 'off',
     'no-sequences': 'error',
     'simple-import-sort/imports': [
       'warn',

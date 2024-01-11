@@ -1,4 +1,4 @@
-import {ColorStop, LinearColorHint} from '../gradient-parser'
+import {ColorStop, CSSColor, LinearColorHint} from '../gradient-parser'
 import {SVGColorStop} from './types'
 
 const R = 360
@@ -8,6 +8,11 @@ const R = 360
  * @param aspectRatio - width : height
  * @param start - first stop color offset in percent
  * @param end - last stop color offset in percent
+ *
+ * The SVG stop color offset cannot be less than 0 or greater than 100.
+ * (x1; y1) point takes into account the start offset
+ * (x2; y2) point takes into account the end offset
+ * Therefore, the converted color offsets must be on a scale from 0 to 100.
  */
 export const svgAngle = (
   angle: number,
@@ -96,8 +101,10 @@ export const svgAngle = (
 
 export const prepareColorStops = (
   colorStops: (ColorStop | LinearColorHint)[],
-): SVGColorStop[] | null => {
- const result: SVGColorStop[] = []
+): {colorStops: ColorStop[]; start: number; end: number} | null => {
+  const preparedColorStops: ColorStop[] = []
+  let start = 0
+  let end = 100
   let min = 0
   for (let i = 0; i < colorStops.length; i++) {
     const colorStop = checkSupportColorStop(colorStops[i])
@@ -113,95 +120,101 @@ export const prepareColorStops = (
         }
       }
       min = colorStop.start.value
+      start = colorStop.start.value
     } else if (colorStop.start) {
       if (colorStop.start.value < min) {
         colorStop.start.value = min
       } else {
         min = colorStop.start.value
       }
-      if (colorStop.end && (colorStop.end.value < colorStop.start.value || i === colorStops.length - 1)) {
+      if (colorStop.end && colorStop.end.value < colorStop.start.value) {
         colorStop.end = undefined
       }
     }
 
-    if (i === colorStops.length - 1 && !colorStop.start) {
-      colorStop.start = {
-        value: Math.max(min, 100),
-        unit: '%',
-        sourceValue: '',
+    if (i === colorStops.length - 1) {
+      if (!colorStop.start) {
+        colorStop.start = {
+          value: Math.max(min, 100),
+          unit: '%',
+          sourceValue: '',
+        }
       }
+      colorStop.end = undefined
+      end = colorStop.start.value
     }
+    preparedColorStops.push(colorStop)
   }
- return result
+  return {
+    colorStops: preparedColorStops,
+    start,
+    end,
+  }
 }
 
 export const svgColorStops = (
-  colorStops: (ColorStop | LinearColorHint)[],
+  colorStops: ColorStop[],
+  cssToSvgColor: (cssColor: CSSColor) => {
+    color: string
+    alpha: number | undefined
+  } | null,
   start: number = 0,
   end: number = 100,
 ): SVGColorStop[] | null => {
   const offset = -start
   const multiplier = start === end ? 1 : 100 / Math.abs(end - start)
 
-
-  let result: SVGColorStop[] = []
+  const result: SVGColorStop[] = []
   let undefinedIndex = -1
-  let definedOffset: undefined | number
   let undefinedFound = false
   let resultIndex = 0
   for (let i = 0; i < colorStops.length; i++) {
-    const colorStop = checkSupportColorStop(colorStops[i])
-    if (!colorStop) {
-      return null
-    }
-    const svgColor = getSvgColor(colorStop)
+    const colorStop = colorStops[i]
+    const svgColor = cssToSvgColor(colorStop.color)
     if (!svgColor) {
       return null
     }
-    let offset = colorStop.start?.value
     const {color: stopColor, alpha: stopOpacity} = svgColor
-    if (offset == null) {
-      if (i === 0) {
-        offset = 0
-      } else if (i === colorStops.length - 1) {
-        offset = 100
-      } else {
+    const cssOffset = colorStop.start?.value
+    if (cssOffset) {
+      const svgOffset = (cssOffset + offset) * multiplier
+      if (undefinedFound) {
+        fillEqualOffset(result, undefinedIndex, svgOffset)
+        undefinedFound = false
+      }
+      result.push({
+        stopColor,
+        stopOpacity,
+        offset: svgOffset,
+      })
+    } else {
+      result.push({
+        stopColor,
+        stopOpacity,
+        offset: undefined,
+      })
+      if (!undefinedFound) {
         undefinedFound = true
         undefinedIndex = resultIndex
       }
     }
-    if (colorStop.start) {
-      if (undefinedFound) {
-        fillEqualOffset(result, undefinedIndex, colorStop.start.value)
-        undefinedFound = false
-      }
-    }
-    result.push({
-      stopColor,
-      stopOpacity,
-      offset,
-    })
     resultIndex++
     if (colorStop.end) {
       result.push({
         stopColor,
         stopOpacity,
-        offset: colorStop.end.value,
+        offset: (colorStop.end.value + offset) * multiplier,
       })
       resultIndex++
     }
   }
-  if (undefinedFound) {
-    fillEqualOffset(result, undefinedIndex, 100)
-  }
-
   return result
 }
 
 const fillEqualOffset = (colorStops: SVGColorStop[], from: number, toOffset: number) => {
-  const prevOffset = from > 0 ? colorStops[from - 1].offset || 0 : 0
-  const leftSpace = Math.max(toOffset - prevOffset, 0)
-  const items = colorStops.length - from || 1
+  const prevOffset = colorStops[from - 1]?.offset ?? 0
+  const leftSpace = toOffset - prevOffset
+  const items = colorStops.length - from
   const length = leftSpace / items
 
   for (let i = from; i < colorStops.length; i++) {
@@ -228,34 +241,39 @@ export const checkSupportColorStop = (
     console.warn(`unsupported offset end unit ${colorStop.end.unit} (${colorStop.end.sourceValue})`)
     return null
   }
-  return colorStop
+  return {...colorStop}
 }
 
-const getSvgColor = (colorStop: ColorStop): {color: string; alpha: number | undefined} | null => {
+export const getSvgColor = (
+  cssColor: CSSColor,
+): {
+  color: string
+  alpha: number | undefined
+} | null => {
   let color = ''
   let alpha: number | undefined
 
-  if (typeof colorStop.color === 'string') {
-    color = colorStop.color
+  if (typeof cssColor === 'string') {
+    color = cssColor
   } else {
-    switch (colorStop.color.type) {
+    switch (cssColor.type) {
       case 'HEX':
       case 'RGB': {
-        color = `rgb(${colorStop.color.R},${colorStop.color.G},${colorStop.color.B})`
+        color = `rgb(${cssColor.R},${cssColor.G},${cssColor.B})`
         break
       }
       case 'HSL': {
-        color = `hsl(${colorStop.color.H},${colorStop.color.S}%,${colorStop.color.L}%)`
+        color = `hsl(${cssColor.H},${cssColor.S}%,${cssColor.L}%)`
         break
       }
 
       default: {
-        console.warn(`unsupported color ${JSON.stringify(colorStop.color)}`)
+        console.warn(`unsupported color ${JSON.stringify(cssColor)}`)
         return null
       }
     }
-    if (colorStop.color.alpha != null && typeof colorStop.color.alpha === 'number') {
-      alpha = colorStop.color.alpha
+    if (cssColor.alpha != null && typeof cssColor.alpha === 'number') {
+      alpha = cssColor.alpha
     }
   }
   return {
