@@ -7,7 +7,8 @@
     "build": "rollup -c",
     "circular": "dpdm -T --tree=false --warning=false --exit-code circular:1 src/**",
     "lint": "eslint --ext .js,.ts,.tsx ./src",
-    "lint:fix": "eslint --ext .js,.ts,.tsx ./src --fix"
+    "lint:fix": "eslint --ext .js,.ts,.tsx ./src --fix",
+    "copy-package": "node copyPackageJson.js"
   },
   "repository": {
     "type": "git",

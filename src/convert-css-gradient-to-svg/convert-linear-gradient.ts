@@ -1,9 +1,8 @@
+import type {CSSColor, LinearGradient} from '../gradient-parser/types'
 import {
-  CSSColor,
   isLinearGradientWithAngle,
   isLinearGradientWithInterpolation,
-  LinearGradient,
-} from '../gradient-parser'
+} from '../gradient-parser/utils'
 import {SVGLinearGradient} from './types'
 import {getSvgColor, prepareColorStops, svgAngle, svgColorStops} from './utils'
 

@@ -1,5 +1,4 @@
-import {convertLinearGradient, SVGLinearGradient} from '../convert-css-gradient-to-svg'
-import {getSvgColor} from '../convert-css-gradient-to-svg/utils'
+import {convertLinearGradient, getSvgColor, SVGLinearGradient} from '../convert-css-gradient-to-svg'
 import {CSSColor, parseLinearGradient} from '../gradient-parser'
 
 export const generateLinearGradient = (
