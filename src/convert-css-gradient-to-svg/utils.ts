@@ -44,17 +44,27 @@ export const svgAngle = (
   angle = ((angle % R) + R) % R
   const width = 300
   const height = width / aspectRatio
-  const radAngle = (angle * Math.PI) / 180
+  const topQuadrant = angle > 90 && angle < 270
+  const rightQuadrant = angle > 180 && angle < 360
 
+  if (angle > 90 && angle < 180) {
+    angle = angle - 90
+  } else if (angle > 180 && angle < 270) {
+    angle = angle - 180
+  } else if (angle > 270 && angle < 360) {
+    angle = angle - 270
+  }
+
+  const radAngle = (angle * Math.PI) / 180
   const DE = (0.5 * width - 0.5 * height * Math.tan(radAngle)) * Math.cos(radAngle)
   const DF = DE * Math.sin(radAngle)
   const DG = DE * Math.cos(radAngle)
 
-  const x1 = DG
-  const y1 = height + DF
+  const x1 = rightQuadrant ? width - DG : DG
+  const y1 = topQuadrant ? -DF : height + DF
 
-  const x2 = width - DG
-  const y2 = -DF
+  const x2 = rightQuadrant ? DG : width - DG
+  const y2 = topQuadrant ? height + DF : -DF
 
   let xs
   let ys
@@ -176,7 +186,7 @@ export const svgColorStops = (
     }
     const {color: stopColor, alpha: stopOpacity} = svgColor
     const cssOffset = colorStop.start?.value
-    if (cssOffset) {
+    if (cssOffset != null) {
       const svgOffset = (cssOffset + offset) * multiplier
       if (undefinedFound) {
         fillEqualOffset(result, undefinedIndex, svgOffset)
@@ -214,7 +224,7 @@ export const svgColorStops = (
 const fillEqualOffset = (colorStops: SVGColorStop[], from: number, toOffset: number) => {
   const prevOffset = colorStops[from - 1]?.offset ?? 0
   const leftSpace = toOffset - prevOffset
-  const items = colorStops.length - from
+  const items = colorStops.length - from + 1
   const length = leftSpace / items
 
   for (let i = from; i < colorStops.length; i++) {

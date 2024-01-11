@@ -17,7 +17,7 @@ describe('linear gradient incorrect input', () => {
   test('comments', () => {
     expect(parseLinearGradient('linear-gradient(/* comment */#e66465, #9198e5)')).toEqual({
       angle: {
-        degAngle: 0,
+        degAngle: 180,
         sourceValue: '',
         unit: 'deg',
       },
@@ -46,7 +46,7 @@ describe('linear gradient incorrect input', () => {
     })
     expect(parseLinearGradient('linear-gradient(red, /* currentColor */)')).toEqual({
       angle: {
-        degAngle: 0,
+        degAngle: 180,
         sourceValue: '',
         unit: 'deg',
       },
@@ -60,7 +60,7 @@ describe('linear gradient incorrect input', () => {
       parseLinearGradient('linear-gradient(rgb(10,20,30), hsl(10 20 30 / 50%) /* */)'),
     ).toEqual({
       angle: {
-        degAngle: 0,
+        degAngle: 180,
         sourceValue: '',
         unit: 'deg',
       },
@@ -91,7 +91,7 @@ describe('linear gradient incorrect input', () => {
   test('without angle', () => {
     expect(parseLinearGradient('linear-gradient(#e66465, #9198e5)')).toEqual({
       angle: {
-        degAngle: 0,
+        degAngle: 180,
         sourceValue: '',
         unit: 'deg',
       },
@@ -120,7 +120,7 @@ describe('linear gradient incorrect input', () => {
     })
     expect(parseLinearGradient('linear-gradient(red, currentColor)')).toEqual({
       angle: {
-        degAngle: 0,
+        degAngle: 180,
         sourceValue: '',
         unit: 'deg',
       },
@@ -135,7 +135,7 @@ describe('linear gradient incorrect input', () => {
     })
     expect(parseLinearGradient('linear-gradient(rgb(10,20,30), hsl(10 20 30 / 50%))')).toEqual({
       angle: {
-        degAngle: 0,
+        degAngle: 180,
         sourceValue: '',
         unit: 'deg',
       },

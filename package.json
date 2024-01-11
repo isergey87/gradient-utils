@@ -16,7 +16,9 @@
   "keywords": [
     "gradient",
     "linear-gradient",
-    "svg"
+    "svg",
+    "css-gradient",
+    "svg-gradient"
   ],
   "author": "isergey87",
   "license": "MIT",

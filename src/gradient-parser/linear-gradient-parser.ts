@@ -96,7 +96,7 @@ export const extractAngle = (
     })
   | null => {
   const unit: AngleUnit = 'deg'
-  let degAngle = 0
+  let degAngle = 180
   let sourceValue = ''
   const angleUnit = extractStartValueWithUnit(gradient, unit)
 

@@ -3,7 +3,7 @@ import {extractAngle, extractSideOrCorner} from '../linear-gradient-parser'
 const toDefaultAngle = (gradientWithoutAngle: string): ReturnType<typeof extractAngle> => ({
   angle: {
     unit: 'deg',
-    degAngle: 0,
+    degAngle: 180,
     sourceValue: '',
   },
   gradientWithoutAngle,
