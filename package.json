@@ -1,6 +1,6 @@
 {
   "name": "gradient-utils",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "css and svg gradient utils",
   "scripts": {
     "test": "jest --passWithNoTests",
