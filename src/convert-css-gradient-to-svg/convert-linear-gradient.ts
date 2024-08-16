@@ -1,20 +1,16 @@
-import type {CSSColor, LinearGradient} from '../gradient-parser/types'
+import type {LinearGradient} from '../gradient-parser/types'
 import {
   isLinearGradientWithAngle,
   isLinearGradientWithInterpolation,
 } from '../gradient-parser/utils'
 import {SVGLinearGradient} from './types'
-import {getSvgColor, prepareColorStops, svgAngle, svgColorStops} from './utils'
+import {prepareColorStops, svgAngle, svgColorStops} from './utils'
 
 const radToDeg = (rad: number) => rad * (180 / Math.PI)
 
 export const convertLinearGradient = (
   cssGradient: LinearGradient,
   aspectRatio: number,
-  cssToSvgColor: (cssColor: CSSColor) => {
-    color: string
-    alpha: number | undefined
-  } | null = getSvgColor,
 ): SVGLinearGradient | null => {
   if (cssGradient.repeatable) {
     console.warn("don't support repeatable gradient")
@@ -72,7 +68,7 @@ export const convertLinearGradient = (
     colorStops: [],
   }
 
-  const colorStops = svgColorStops(rawColorStops, cssToSvgColor, start, end)
+  const colorStops = svgColorStops(rawColorStops, start, end)
   if (colorStops === null) {
     console.warn("Can't get color stops")
     return null

@@ -1,4 +1,4 @@
-import {ColorStop, CSSColor, LinearColorHint} from '../gradient-parser'
+import {ColorStop, LinearColorHint} from '../gradient-parser'
 import {SVGColorStop} from './types'
 
 const R = 360
@@ -164,10 +164,6 @@ export const prepareColorStops = (
 
 export const svgColorStops = (
   colorStops: ColorStop[],
-  cssToSvgColor: (cssColor: CSSColor) => {
-    color: string
-    alpha: number | undefined
-  } | null,
   start: number = 0,
   end: number = 100,
 ): SVGColorStop[] | null => {
@@ -180,11 +176,7 @@ export const svgColorStops = (
   let resultIndex = 0
   for (let i = 0; i < colorStops.length; i++) {
     const colorStop = colorStops[i]
-    const svgColor = cssToSvgColor(colorStop.color)
-    if (!svgColor) {
-      return null
-    }
-    const {color: stopColor, alpha: stopOpacity} = svgColor
+    const {color: stopColor, alpha: stopOpacity} = colorStop
     const cssOffset = colorStop.start?.value
     if (cssOffset != null) {
       const svgOffset = (cssOffset + offset) * multiplier
@@ -252,44 +244,6 @@ export const checkSupportColorStop = (
     return null
   }
   return {...colorStop}
-}
-
-export const getSvgColor = (
-  cssColor: CSSColor,
-): {
-  color: string
-  alpha: number | undefined
-} | null => {
-  let color = ''
-  let alpha: number | undefined
-
-  if (typeof cssColor === 'string') {
-    color = cssColor
-  } else {
-    switch (cssColor.type) {
-      case 'HEX':
-      case 'RGB': {
-        color = `rgb(${cssColor.R},${cssColor.G},${cssColor.B})`
-        break
-      }
-      case 'HSL': {
-        color = `hsl(${cssColor.H},${cssColor.S}%,${cssColor.L}%)`
-        break
-      }
-
-      default: {
-        console.warn(`unsupported color ${JSON.stringify(cssColor)}`)
-        return null
-      }
-    }
-    if (cssColor.alpha != null && typeof cssColor.alpha === 'number') {
-      alpha = cssColor.alpha
-    }
-  }
-  return {
-    color,
-    alpha,
-  }
 }
 
 const isColorStop = (colorStop: ColorStop | LinearColorHint): colorStop is ColorStop =>

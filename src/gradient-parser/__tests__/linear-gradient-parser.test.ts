@@ -23,24 +23,10 @@ describe('linear gradient incorrect input', () => {
       },
       colorStops: [
         {
-          color: {
-            type: 'HEX',
-            R: 230,
-            G: 100,
-            B: 101,
-            alpha: undefined,
-            source: '#e66465',
-          },
+          color: '#e66465',
         },
         {
-          color: {
-            type: 'HEX',
-            R: 145,
-            G: 152,
-            B: 229,
-            alpha: undefined,
-            source: '#9198e5',
-          },
+          color: '#9198e5',
         },
       ],
     })
@@ -66,24 +52,10 @@ describe('linear gradient incorrect input', () => {
       },
       colorStops: [
         {
-          color: {
-            type: 'RGB',
-            R: 10,
-            G: 20,
-            B: 30,
-            alpha: undefined,
-            source: 'rgb(10,20,30)',
-          },
+          color: 'rgb(10,20,30)',
         },
         {
-          color: {
-            type: 'HSL',
-            H: 10,
-            S: 20,
-            L: 30,
-            alpha: 0.5,
-            source: 'hsl(10 20 30 / 50%)',
-          },
+          color: 'hsl(10 20 30 / 50%)',
         },
       ],
     })
@@ -97,24 +69,10 @@ describe('linear gradient incorrect input', () => {
       },
       colorStops: [
         {
-          color: {
-            type: 'HEX',
-            R: 230,
-            G: 100,
-            B: 101,
-            alpha: undefined,
-            source: '#e66465',
-          },
+          color: '#e66465',
         },
         {
-          color: {
-            type: 'HEX',
-            R: 145,
-            G: 152,
-            B: 229,
-            alpha: undefined,
-            source: '#9198e5',
-          },
+          color: '#9198e5',
         },
       ],
     })
@@ -141,24 +99,10 @@ describe('linear gradient incorrect input', () => {
       },
       colorStops: [
         {
-          color: {
-            type: 'RGB',
-            R: 10,
-            G: 20,
-            B: 30,
-            alpha: undefined,
-            source: 'rgb(10,20,30)',
-          },
+          color: 'rgb(10,20,30)',
         },
         {
-          color: {
-            type: 'HSL',
-            H: 10,
-            S: 20,
-            L: 30,
-            alpha: 0.5,
-            source: 'hsl(10 20 30 / 50%)',
-          },
+          color: 'hsl(10 20 30 / 50%)',
         },
       ],
     })
@@ -172,34 +116,13 @@ describe('linear gradient incorrect input', () => {
       },
       colorStops: [
         {
-          color: {
-            type: 'HEX',
-            R: 63,
-            G: 135,
-            B: 166,
-            alpha: undefined,
-            source: '#3f87a6',
-          },
+          color: '#3f87a6',
         },
         {
-          color: {
-            type: 'HEX',
-            R: 235,
-            G: 248,
-            B: 225,
-            alpha: undefined,
-            source: '#ebf8e1',
-          },
+          color: '#ebf8e1',
         },
         {
-          color: {
-            type: 'HEX',
-            R: 246,
-            G: 157,
-            B: 60,
-            alpha: undefined,
-            source: '#f69d3c',
-          },
+          color: '#f69d3c',
         },
       ],
     })
@@ -215,24 +138,10 @@ describe('linear gradient incorrect input', () => {
       },
       colorStops: [
         {
-          color: {
-            type: 'HEX',
-            R: 51,
-            G: 51,
-            B: 51,
-            alpha: undefined,
-            source: '#333',
-          },
+          color: '#333',
         },
         {
-          color: {
-            type: 'HEX',
-            R: 51,
-            G: 51,
-            B: 51,
-            alpha: undefined,
-            source: '#333',
-          },
+          color: '#333',
           start: {
             value: 50,
             unit: '%',
@@ -240,14 +149,7 @@ describe('linear gradient incorrect input', () => {
           },
         },
         {
-          color: {
-            type: 'HEX',
-            R: 238,
-            G: 238,
-            B: 238,
-            alpha: undefined,
-            source: '#eee',
-          },
+          color: '#eee',
           start: {
             value: 75,
             unit: '%',
@@ -255,14 +157,7 @@ describe('linear gradient incorrect input', () => {
           },
         },
         {
-          color: {
-            type: 'HEX',
-            R: 51,
-            G: 51,
-            B: 51,
-            alpha: undefined,
-            source: '#333',
-          },
+          color: '#333',
           start: {
             value: 75,
             unit: '%',
@@ -272,7 +167,9 @@ describe('linear gradient incorrect input', () => {
       ],
     })
     expect(
-      parseLinearGradient('linear-gradient(336deg, rgba(0,0,255,.8), rgba(0,0,255,0) 70.71%)'),
+      parseLinearGradient(
+        'linear-gradient(336deg, rgba(0,0,255,.8), rgba(0,0,255,0) 70.71%, #ffff)',
+      ),
     ).toEqual({
       angle: {
         degAngle: 336,
@@ -281,29 +178,19 @@ describe('linear gradient incorrect input', () => {
       },
       colorStops: [
         {
-          color: {
-            type: 'RGB',
-            R: 0,
-            G: 0,
-            B: 255,
-            alpha: 0.8,
-            source: 'rgba(0,0,255,.8)',
-          },
+          color: 'rgba(0,0,255,.8)',
         },
         {
-          color: {
-            type: 'RGB',
-            R: 0,
-            G: 0,
-            B: 255,
-            alpha: 0,
-            source: 'rgba(0,0,255,0)',
-          },
+          color: 'rgba(0,0,255,0)',
           start: {
             value: 70.71,
             unit: '%',
             sourceValue: '70.71%',
           },
+        },
+        {
+          color: '#fff',
+          alpha: 1,
         },
       ],
     })

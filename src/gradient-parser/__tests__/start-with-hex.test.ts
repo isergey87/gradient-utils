@@ -5,69 +5,28 @@ describe('start with hex', () => {
     expect(extractStartWithHex('currentColor')).toBe(null)
   })
   test('hex check', () => {
+    expect(extractStartWithHex('#ff;')).toEqual(null)
     expect(extractStartWithHex('#fff;')).toEqual({
-      type: 'HEX',
-      R: 255,
-      G: 255,
-      B: 255,
+      color: '#fff',
       alpha: undefined,
-      source: '#fff',
+      source: ';',
     })
-    expect(extractStartWithHex('#ffff ')).toEqual({
-      type: 'HEX',
-      R: 255,
-      G: 255,
-      B: 255,
+    expect(extractStartWithHex('#ffff 50%')).toEqual({
+      color: '#fff',
       alpha: 1,
-      source: '#ffff',
+      source: '50%',
     })
-    expect(extractStartWithHex('#ffffff,')).toEqual({
-      type: 'HEX',
-      R: 255,
-      G: 255,
-      B: 255,
+    expect(extractStartWithHex('#fffff;')).toEqual(null)
+    expect(extractStartWithHex('#ffffff, #000')).toEqual({
+      color: '#ffffff',
       alpha: undefined,
-      source: '#ffffff',
+      source: ', #000',
     })
+    expect(extractStartWithHex('#fffffff;')).toEqual(null)
     expect(extractStartWithHex('#ffffffff)')).toEqual({
-      type: 'HEX',
-      R: 255,
-      G: 255,
-      B: 255,
+      color: '#ffffff',
       alpha: 1,
-      source: '#ffffffff',
-    })
-    expect(extractStartWithHex('#30d;')).toEqual({
-      type: 'HEX',
-      R: 51,
-      G: 0,
-      B: 221,
-      alpha: undefined,
-      source: '#30d',
-    })
-    expect(extractStartWithHex('#30dc ')).toEqual({
-      type: 'HEX',
-      R: 51,
-      G: 0,
-      B: 221,
-      alpha: 0.8,
-      source: '#30dc',
-    })
-    expect(extractStartWithHex('#310498,')).toEqual({
-      type: 'HEX',
-      R: 49,
-      G: 4,
-      B: 152,
-      alpha: undefined,
-      source: '#310498',
-    })
-    expect(extractStartWithHex('#31049566')).toEqual({
-      type: 'HEX',
-      R: 49,
-      G: 4,
-      B: 149,
-      alpha: 0.4,
-      source: '#31049566',
+      source: ')',
     })
   })
 })

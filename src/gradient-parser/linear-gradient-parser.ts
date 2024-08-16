@@ -8,13 +8,10 @@ import {
 } from './types'
 import {
   angleToDeg,
+  extractColor,
   extractStartComma,
-  extractStartNamedColor,
   extractStartValueWithUnit,
-  extractStartWithFunction,
-  extractStartWithHex,
   isAngleUnit,
-  parseFunctionColor,
   removeCSSComments,
   START_WITH_INTERPOLATION,
   START_WITH_SIDE_OR_CORNER_REGEX,
@@ -193,30 +190,12 @@ export const extractInterpolation = (
 
 const parseColorStop = (source: string): ColorStop | LinearColorHint | null => {
   let colorStop: ColorStop | LinearColorHint | null = null
-
-  const fun = extractStartWithFunction(source)
-  if (fun) {
-    source = fun.source.trim()
+  const colorResult = extractColor(source)
+  if (colorResult) {
+    source = colorResult.source
     colorStop = {
-      color: parseFunctionColor(fun.function),
-    }
-  }
-  if (!colorStop) {
-    const hex = extractStartWithHex(source)
-    if (hex) {
-      source = source.substring(hex.source.length).trim()
-      colorStop = {
-        color: hex,
-      }
-    }
-  }
-  if (!colorStop) {
-    const namedColor = extractStartNamedColor(source)
-    if (namedColor) {
-      source = namedColor.source.trim()
-      colorStop = {
-        color: namedColor.color,
-      }
+      color: colorResult.color,
+      alpha: colorResult.alpha,
     }
   }
   let valueWithUnit = extractStartValueWithUnit(source)

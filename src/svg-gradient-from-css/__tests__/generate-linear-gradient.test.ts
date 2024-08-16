@@ -113,11 +113,31 @@ describe('generate-linear-gradient', () => {
       colorStops: [
         {
           offset: 0,
-          stopColor: 'rgb(230,100,101)',
+          stopColor: '#e66465',
         },
         {
           offset: 100,
-          stopColor: 'rgb(145,152,229)',
+          stopColor: '#9198e5',
+        },
+      ],
+      x1: '50%',
+      x2: '50%',
+      y1: '1.8369701987210297e-14%',
+      y2: '99.99999999999999%',
+    })
+  })
+  test('linear-gradient(#e66465ff, #9198e5fe)', () => {
+    expect(generateLinearGradient('linear-gradient(#e66465ff, #9198e533)', 3)).toEqual({
+      colorStops: [
+        {
+          offset: 0,
+          stopColor: '#e66465',
+          stopOpacity: 1,
+        },
+        {
+          offset: 100,
+          stopColor: '#9198e5',
+          stopOpacity: 0.2,
         },
       ],
       x1: '50%',
@@ -133,15 +153,15 @@ describe('generate-linear-gradient', () => {
       colorStops: [
         {
           offset: 0,
-          stopColor: 'rgb(63,135,166)',
+          stopColor: '#3f87a6',
         },
         {
           offset: 50,
-          stopColor: 'rgb(235,248,225)',
+          stopColor: '#ebf8e1',
         },
         {
           offset: 100,
-          stopColor: 'rgb(246,157,60)',
+          stopColor: '#f69d3c',
         },
       ],
       x1: '-1.020538999289461e-15%',
@@ -152,24 +172,25 @@ describe('generate-linear-gradient', () => {
   })
   test('linear-gradient(to left, #333, #333 50%, #eee 75%, #333 75%)', () => {
     expect(
-      generateLinearGradient('linear-gradient(to left, #333, #333 50%, #eee 75%, #333 75%)', 3),
+      generateLinearGradient('linear-gradient(to left, #333, #333 50%, #eeef 75%, #333 75%)', 3),
     ).toEqual({
       colorStops: [
         {
           offset: 0,
-          stopColor: 'rgb(51,51,51)',
+          stopColor: '#333',
         },
         {
           offset: 66.66666666666666,
-          stopColor: 'rgb(51,51,51)',
+          stopColor: '#333',
         },
         {
           offset: 100,
-          stopColor: 'rgb(238,238,238)',
+          stopColor: '#eee',
+          stopOpacity: 1,
         },
         {
           offset: 100,
-          stopColor: 'rgb(51,51,51)',
+          stopColor: '#333',
         },
       ],
       x1: '100%',
@@ -188,13 +209,11 @@ describe('generate-linear-gradient', () => {
       colorStops: [
         {
           offset: 0,
-          stopColor: 'rgb(255,0,0)',
-          stopOpacity: 0.8,
+          stopColor: 'rgba(255,0,0,.8)',
         },
         {
           offset: 100,
-          stopColor: 'rgb(255,0,0)',
-          stopOpacity: 0,
+          stopColor: 'rgba(255,0,0,0)',
         },
       ],
       x1: '76.11958023739435%',

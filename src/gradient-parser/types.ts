@@ -37,7 +37,8 @@ export interface SideOrCorner {
 }
 
 export interface ColorStop {
-  color: CSSColor
+  color: string
+  alpha?: number
   start?: LengthPercentage
   end?: LengthPercentage
 }
@@ -53,112 +54,3 @@ export interface LengthPercentage {
   unit: string
   sourceValue: string
 }
-
-export interface HEX {
-  type: 'HEX'
-  /** number value (0;255) */
-  R: number
-  /** number value (0;255) */
-  G: number
-  /** number value (0;255) */
-  B: number
-  /** number value (0;1) */
-  alpha?: number
-  source: string
-}
-
-export interface RGB {
-  type: 'RGB'
-  /** number value (0;255) */
-  R: number
-  /** number value (0;255) */
-  G: number
-  /** number value (0;255) */
-  B: number
-  /** number value (0;1) */
-  alpha?: number
-  source: string
-}
-
-export interface HSL {
-  type: 'HSL'
-  /** angle deg */
-  H: number | 'none'
-  S: number | 'none'
-  L: number | 'none'
-  /** number value (0;1) */
-  alpha?: number | 'none'
-  source: string
-}
-
-export interface HWB {
-  type: 'HWB'
-  /** angle deg */
-  H: number | 'none'
-  W: number | 'none'
-  B: number | 'none'
-  /** number value (0;1) */
-  alpha?: number | 'none'
-  source: string
-}
-
-export interface LAB {
-  type: 'LAB'
-  L: number | 'none'
-  /** number value (-125;125) */
-  a: number | 'none'
-  /** number value (-125;125) */
-  b: number | 'none'
-  /** number value (0;1) */
-  alpha?: number | 'none'
-  source: string
-}
-
-export interface LCH {
-  type: 'LCH'
-  L: number | 'none'
-  /** number value (0;150) */
-  C: number | 'none'
-  /** angle deg */
-  H: number | 'none'
-  /** number value (0;1) */
-  alpha?: number | 'none'
-  source: string
-}
-
-export interface Oklab {
-  type: 'Oklab'
-  /** number value (0;1) */
-  L: number | 'none'
-  /** number value (-0.4;0.4) */
-  a: number | 'none'
-  /** number value (-0.4;0.4) */
-  b: number | 'none'
-  /** number value (0;1) */
-  alpha?: number | 'none'
-  source: string
-}
-
-export interface Oklch {
-  type: 'Oklch'
-  /** number value (0;1) */
-  L: number | 'none'
-  /** number value (0;0.4) */
-  C: number | 'none'
-  /** angle deg */
-  H: number | 'none'
-  /** number value (0;1) */
-  alpha?: number | 'none'
-  source: string
-}
-
-export interface UnknownColor {
-  type: 'UnknownColor'
-  color: string
-}
-
-export type FunctionColor = RGB | HSL | HWB | LAB | LCH | Oklab | Oklch | UnknownColor
-
-export type NamedColor = string
-
-export type CSSColor = HEX | NamedColor | FunctionColor
