@@ -24,8 +24,6 @@ Parse css _repeating-linear-gradient_ return `LinearGradient | null`
 
 If the gradient is without an angle, then returns `180deg` according to the specification
 
-If the color cannot be parsed, `Unknown Color` will be returned
-
 **isLinearGradientWithAngle**
 
 Checks if parsed gradient is gradient with angle e.g. `linear-gradient(217deg, red, green)`
@@ -51,11 +49,6 @@ Does not support
 - if there are less than two colors in the gradient
 - color hint e.g. `linear-gradient(red, 30%, blue);`
 - color length except percentage
-
-**getSvgColor**
-Default css to svg color converter.
-The named color is returned as is. (Don't check if color is supported in svg).
-Supports HEX, RGB, HSL colors.
 
 ### gradient-utils/svg-gradient-from-css
 
